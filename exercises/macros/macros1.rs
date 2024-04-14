@@ -3,14 +3,15 @@
 // Execute `rustlings hint macros1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 macro_rules! my_macro {
     () => {
-        println!("Check out my macro!");
+        println!("Check out my macro!{}",2);
     };
 }
 
 fn main() {
-    my_macro();
+    let a :Result<i32, i32>= Result::<i32, i32>::Ok(2);
+    println!("{:?}",a.unwrap());
+    my_macro!();
 }
