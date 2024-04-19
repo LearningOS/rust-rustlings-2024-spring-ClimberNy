@@ -2,7 +2,6 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -29,13 +28,13 @@ struct LinkedList<T> {
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T: std::cmp::PartialOrd+ Clone> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> LinkedList<T> {
+impl<T: std::cmp::PartialOrd+ Clone> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -69,14 +68,40 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+	pub fn merge(mut list_a:LinkedList<T>,mut list_b:LinkedList<T>) -> LinkedList<T>
 	{
 		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
-        }
+        let mut list_c = LinkedList::<T>::new();
+        let mut a = 0;
+        let mut b = 0;
+        for i in 0..(list_a.length+list_b.length){
+            // println!("jjj");
+            if (list_a.length-1 >= a) && (list_b.length-1 >= b){  
+                // println!("jjj");
+
+                if *list_a.get(a as i32).unwrap()<*list_b.get(b as i32).unwrap(){
+                    // println!("jjjj");
+                    list_c.add((*list_a.get(a as i32).unwrap()).clone());
+                    a += 1;
+                }else{
+                    list_c.add((*list_b.get(b as i32).unwrap()).clone());
+                    b += 1;
+                }
+            }else if (list_a.length-1 >= a) || (list_b.length-1 >= b){
+                if list_a.length-1 >= a{
+                    list_c.add((*list_a.get(a as i32).unwrap()).clone());
+                    a += 1;
+                }else{
+                    list_c.add((*list_b.get(b as i32).unwrap()).clone());
+                    b += 1;
+                }
+            }else{
+                continue;
+            }
+			
+		}
+        list_c
+        
 	}
 }
 
