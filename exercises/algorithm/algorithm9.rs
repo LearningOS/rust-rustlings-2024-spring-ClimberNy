@@ -18,7 +18,7 @@ where
 
 impl<T> Heap<T>
 where
-    T: Default,
+    T: Default + Clone,
 {
     pub fn new(comparator: fn(&T, &T) -> bool) -> Self {
         Self {
@@ -38,6 +38,35 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        if self.items.len() != 0&&self.count==0{
+            self.items.remove(0);
+        }
+        self.items.push(value);
+        self.count += 1;
+        println!("{}",self.count);
+        if self.count == 1{
+            
+        }else{
+            // println!("{}",self.count);
+
+            for i in (0..self.count-2).rev(){
+            // println!("{}",self.count);
+                if (self.comparator)(&self.items[i],&self.items[i+1]){}
+                else{
+                    // if let [a, b @ .., c] = &mut self.items[..=i] {
+                    //     // 交换 a 和 c 的值
+                    //     // println!("aaa");
+                    //     std::mem::swap(a, c);
+                    // }
+                    // self.items[i]=self.items[i].clone()+self.items[i+1].clone();
+                    // self.items[i+1]=self.items[i].clone()-self.items[i+1].clone();
+                    // self.items[i]=self.items[i].clone()-self.items[i+1].clone();
+
+                }
+            }
+
+        }
+        
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -79,12 +108,19 @@ where
 
 impl<T> Iterator for Heap<T>
 where
-    T: Default,
+    T: Default + Clone,
 {
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
         //TODO
+        if self.count != 0{
+            let option: Option<T> = Some(self.items.remove(0));
+            self.count -= 1;
+            
+            
+            return option;
+        }
 		None
     }
 }

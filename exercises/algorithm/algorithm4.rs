@@ -3,7 +3,6 @@
 	This problem requires you to implement a basic interface for a binary tree
 */
 
-//I AM NOT DONE
 use std::cmp::Ordering;
 use std::fmt::Debug;
 
@@ -41,7 +40,7 @@ where
 
 impl<T> BinarySearchTree<T>
 where
-    T: Ord,
+    T: Ord + Clone,
 {
 
     fn new() -> Self {
@@ -51,7 +50,10 @@ where
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
         //TODO
-        match &self.root{
+        if self.search(value.clone()){
+
+        }else{
+        match &mut self.root{
             None => {
                 let mut new_treenode = TreeNode::new(value);
                 self.root = Some(Box::new(new_treenode));
@@ -60,26 +62,66 @@ where
             Some(treenode) => treenode.insert(value)
         }        
     }
+}
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
         //TODO
-        true
+        fn search<T: std::cmp::Ord>(treenode:&Option<Box<TreeNode<T>>>,value:T)-> bool{
+            match &treenode{
+                None => return false,
+                Some(treenode) => {
+                    if treenode.value == value{
+                        return true;
+                    }else{
+                        println!("a");
+
+                        return search(&treenode.left,value);                   
+                    }
+                }
+            }
+
+        }
+        search(&self.root,value)
+        // loop{
+            // match &self.root{
+            //     None => return false,
+            //     Some(treenode) => {
+            //         if treenode.value == value{
+            //             return true;
+            //         }else{
+            //             let left_treenode = BinarySearchTree {
+            //                 root : treenode.left                                                           //********** */
+
+            //             };
+            //             return left_treenode.search(value);                   
+            //         }
+            //     }
+            // }
+            
+        // }
     }
 }
 
 impl<T> TreeNode<T>
 where
-    T: Ord,
+    T: Ord ,
 {
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
         //TODO
-        let mut new_treenode = TreeNode::new(value);
-        // match self{
-        //     None => {self = &Some(new_treenode)},
-        //     Some(treenode) => treenode.insert(value)
-        // }
+        
+        match &mut self.left{
+            None => {
+                let mut new_treenode = TreeNode::new(value);
+                self.left = Some(Box::new(new_treenode));
+                println!("AA");
+            }
+            Some(treenode) => {
+                treenode.insert(value);
+            }
+        }
+        
     }
 }
 
