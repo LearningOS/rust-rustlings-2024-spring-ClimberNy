@@ -2,7 +2,6 @@
 	heap
 	This question requires you to implement a binary heap function
 */
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -18,7 +17,7 @@ where
 
 impl<T> Heap<T>
 where
-    T: Default + Clone,
+    T: Default,
 {
     pub fn new(comparator: fn(&T, &T) -> bool) -> Self {
         Self {
@@ -43,24 +42,31 @@ where
         }
         self.items.push(value);
         self.count += 1;
-        println!("{}",self.count);
+        // println!("{}",self.count);
         if self.count == 1{
             
         }else{
             // println!("{}",self.count);
 
-            for i in (0..self.count-2).rev(){
+            for i in (0..self.count-1).rev(){
             // println!("{}",self.count);
                 if (self.comparator)(&self.items[i],&self.items[i+1]){}
                 else{
                     // if let [a, b @ .., c] = &mut self.items[..=i] {
                     //     // 交换 a 和 c 的值
-                    //     // println!("aaa");
+                        println!("aaa");
                     //     std::mem::swap(a, c);
                     // }
                     // self.items[i]=self.items[i].clone()+self.items[i+1].clone();
                     // self.items[i+1]=self.items[i].clone()-self.items[i+1].clone();
                     // self.items[i]=self.items[i].clone()-self.items[i+1].clone();
+                    let item1_ptr = &mut self.items[i] as *mut _;
+                    let item2_ptr = &mut self.items[i + 1] as *mut _;
+                    
+                    unsafe {
+                        std::ptr::swap(item1_ptr, item2_ptr);
+                        
+                    }
 
                 }
             }

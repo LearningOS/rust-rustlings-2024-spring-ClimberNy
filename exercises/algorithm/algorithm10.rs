@@ -2,7 +2,6 @@
 	graph
 	This problem requires you to implement a basic graph functio
 */
-// I AM NOT DONE
 
 use std::collections::{HashMap, HashSet};
 use std::fmt;
@@ -30,6 +29,24 @@ impl Graph for UndirectedGraph {
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
         //TODO
+        if self.adjacency_table.get(edge.0) != None{
+            if let Some(edges) = self.adjacency_table.get_mut(edge.0) {
+                // 修改边数据
+                edges.push((String::from(edge.1), edge.2));
+            }
+        }else{
+            self.adjacency_table.insert(edge.0.to_string(),vec![((edge.1).to_string(),edge.2)]);
+        }
+
+        if self.adjacency_table.get(edge.1) != None{
+            if let Some(edges) = self.adjacency_table.get_mut(edge.1) {
+                // 修改边数据
+                edges.push((String::from(edge.0), edge.2));
+            }
+        }else{
+            self.adjacency_table.insert(edge.1.to_string(),vec![((edge.0).to_string(),edge.2)]);
+        }
+
     }
 }
 pub trait Graph {
@@ -41,9 +58,27 @@ pub trait Graph {
 		true
     }
     fn add_edge(&mut self, edge: (&str, &str, i32)) {
-        //TODO
+        if self.adjacency_table_mutable().get(edge.0) != None{
+            if let Some(edges) = self.adjacency_table_mutable().get_mut(edge.0) {
+                // 修改边数据
+                edges.push((String::from(edge.1), edge.2));
+            }
+        }else{
+            self.adjacency_table_mutable().insert(edge.0.to_string(),vec![((edge.1).to_string(),edge.2)]);
+        }
+
+        if self.adjacency_table_mutable().get(edge.1) != None{
+            if let Some(edges) = self.adjacency_table_mutable().get_mut(edge.1) {
+                // 修改边数据
+                edges.push((String::from(edge.0), edge.2));
+            }
+        }else{
+            self.adjacency_table_mutable().insert(edge.1.to_string(),vec![((edge.0).to_string(),edge.2)]);
+        }
+        
+        
     }
-    fn contains(&self, node: &str) -> bool {
+    fn contains(&self, node: (&str)) -> bool {
         self.adjacency_table().get(node).is_some()
     }
     fn nodes(&self) -> HashSet<&String> {
@@ -78,6 +113,7 @@ mod test_undirected_graph {
             (&String::from("c"), &String::from("b"), 10),
         ];
         for edge in expected_edges.iter() {
+            println!("1");
             assert_eq!(graph.edges().contains(edge), true);
         }
     }
